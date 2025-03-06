@@ -1,0 +1,13 @@
+version: "1"
+rules:
+  - base: adam
+    upstream: jlesage:master
+    assignees:
+      - alussier
+    reviewers:
+      - alussier
+    conflictReviewers:
+      - alussier
+  - base: master
+    upstream: jlesage:master
+    mergeMethod: hardreset
