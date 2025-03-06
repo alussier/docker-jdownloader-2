@@ -39,7 +39,7 @@ WORKDIR /tmp
 RUN \
     add-pkg \
         java-common \
-        openjdk8-jre \
+        openjdk21-jre \
         # Needed by the init script.
         jq \
         # We need a font.
