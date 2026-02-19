@@ -13,7 +13,8 @@ modern web browser, requiring no installation or configuration on the client
 side, or via any VNC client.
 
 > [!NOTE]
-> This Docker container is entirely unofficial and not made by the creators of JDownloader 2.
+> This Docker container is entirely unofficial and not made by the creators of
+> JDownloader 2.
 
 ---
 
@@ -57,6 +58,7 @@ your valuable time every day!
    * [Web Audio](#web-audio)
    * [Web File Manager](#web-file-manager)
    * [Web Notifications](#web-notifications)
+      * [Web Terminal](#web-terminal)
    * [GPU Acceleration Support](#gpu-acceleration-support)
    * [Shell Access](#shell-access)
    * [MyJDownloader](#myjdownloader)
@@ -122,7 +124,7 @@ the `-e` parameter in the format `<VARIABLE_NAME>=<VALUE>`.
 |`LANG`| Sets the [locale](https://en.wikipedia.org/wiki/Locale_(computer_software)), defining the application's language, if supported. Format is `language[_territory][.codeset]`, where language is an [ISO 639 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes), territory is an [ISO 3166 country code](https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes), and codeset is a character set, like `UTF-8`. For example, Australian English using UTF-8 is `en_AU.UTF-8`. | `en_US.UTF-8` |
 |`TZ`| [TimeZone](http://en.wikipedia.org/wiki/List_of_tz_database_time_zones) used by the container. The timezone can also be set by mapping `/etc/localtime` between the host and the container. | `Etc/UTC` |
 |`KEEP_APP_RUNNING`| When set to `1`, the application is automatically restarted if it crashes or terminates. | `0` |
-|`APP_NICENESS`| Priority at which the application runs. A niceness value of -20 is the highest, 19 is the lowest and 0 the default. **NOTE**: A negative niceness (priority increase) requires additional permissions. The container must be run with the Docker option `--cap-add=SYS_NICE`. | `0` |
+|`APP_NICENESS`| Priority at which the application runs. A niceness value of `-20` is the highest, `19` is the lowest and `0` the default. **NOTE**: A negative niceness (priority increase) requires additional permissions. The container must be run with the Docker option `--cap-add=SYS_NICE`. | `0` |
 |`INSTALL_PACKAGES`| Space-separated list of packages to install during container startup. List of available packages can be found at https://pkgs.alpinelinux.org. | (no value) |
 |`PACKAGES_MIRROR`| Mirror of the repository to use when installing packages. List of mirrors is available at https://mirrors.alpinelinux.org. | (no value) |
 |`CONTAINER_DEBUG`| When set to `1`, enables debug logging. | `0` |
@@ -134,6 +136,7 @@ the `-e` parameter in the format `<VARIABLE_NAME>=<VALUE>`.
 |`WEB_FILE_MANAGER_ALLOWED_PATHS`| Comma-separated list of paths within the container that the file manager can access. By default, the container's entire filesystem is not accessible, and this variable specifies allowed paths. If set to `AUTO`, commonly used folders and those mapped to the container are automatically allowed. The value `ALL` allows access to all paths (no restrictions). See [Web File Manager](#web-file-manager) for details. | `AUTO` |
 |`WEB_FILE_MANAGER_DENIED_PATHS`| Comma-separated list of paths within the container that the file manager cannot access. A denied path takes precedence over an allowed path. See [Web File Manager](#web-file-manager) for details. | (no value) |
 |`WEB_NOTIFICATION`| When set to `1`, enables the web notification service, allowing the browser to display desktop notifications from the application. Requires the container to be configured with secure web access (HTTPS). See [Web Notifications](#web-notifications) for details. | `0` |
+|`WEB_TERMINAL`| When set to `1`, enables access to a terminal from the web interface. It is strongly recommended to configure the container with secure web access (HTTPS). See [Web Terminal](#web-terminal) for details. | `0` |
 |`WEB_AUTHENTICATION`| When set to `1`, protects the application's GUI with a login page when accessed via a web browser. Access is granted only with valid credentials. Requires the container to be configured with secure web access (HTTPS). See [Web Authentication](#web-authentication) for details. | `0` |
 |`WEB_AUTHENTICATION_TOKEN_VALIDITY_TIME`| Lifetime of a token, in hours. A token is assigned to the user after successful login. As long as the token is valid, the user can access the application's GUI without logging in again. Once the token expires, the login page is displayed again. | `24` |
 |`WEB_AUTHENTICATION_USERNAME`| Optional username for web authentication. Provides a quick and easy way to configure credentials for a single user. For more secure configuration or multiple users, see the [Web Authentication](#web-authentication) section. | (no value) |
@@ -147,11 +150,11 @@ the `-e` parameter in the format `<VARIABLE_NAME>=<VALUE>`.
 |`VNC_LISTENING_PORT`| Port used by the VNC server to serve the application's GUI. This port is internal to the container and typically does not need to be changed. By default, a container uses the default bridge network, requiring each internal port to be mapped to an external port (using the `-p` or `--publish` argument). If another network type is used, changing this port may prevent conflicts with other services/containers. **NOTE**: A value of `-1` disables VNC access to the application's GUI. | `5900` |
 |`VNC_PASSWORD`| Password required to connect to the application's GUI. See the [VNC Password](#vnc-password) section for details. | (no value) |
 |`ENABLE_CJK_FONT`| When set to `1`, installs the open-source font `WenQuanYi Zen Hei`, supporting a wide range of Chinese/Japanese/Korean characters. | `0` |
-|`MYJDOWNLOADER_EMAIL`| Email address of the MyJDownloader account to use.  Note that this can also be configured via the JDownloader GUI. | (no value) |
-|`MYJDOWNLOADER_PASSWORD`| Password of the MyJDownloader account to use.  Note that this can also be configured via the JDownloader GUI. | (no value) |
-|`MYJDOWNLOADER_DEVICE_NAME`| The name of this JDownloader instance.  Note that this can also be configured via the JDownloader GUI. | (no value) |
-|`JDOWNLOADER_HEADLESS`| When set to `1`, JDownloader is running in headless mode, meaning that no GUI is available.  In this mode, MyJDownloader should be used to remote control JDownloader. | `0` |
-|`JDOWNLOADER_MAX_MEM`| Maximum amount of memory JDownloader is allowed to use. One of the following memory unit (case insensitive) should be added as a suffix to the size: `G`, `M` or `K`.  When this variable is not set, the limit is automatically calculated based on the amount of RAM of the system. | (no value) |
+|`MYJDOWNLOADER_EMAIL`| Email address of the MyJDownloader account to use. Note that this can also be configured via the JDownloader GUI. | (no value) |
+|`MYJDOWNLOADER_PASSWORD`| Password of the MyJDownloader account to use. Note that this can also be configured via the JDownloader GUI. | (no value) |
+|`MYJDOWNLOADER_DEVICE_NAME`| The name of this JDownloader instance. Note that this can also be configured via the JDownloader GUI. | (no value) |
+|`JDOWNLOADER_HEADLESS`| When set to `1`, JDownloader is running in headless mode, meaning that no GUI is available. In this mode, MyJDownloader should be used to remote control JDownloader. | `0` |
+|`JDOWNLOADER_MAX_MEM`| Maximum amount of memory JDownloader is allowed to use. One of the following memory unit (case insensitive) should be added as a suffix to the size: `G`, `M` or `K`. When this variable is not set, the limit is automatically calculated based on the amount of RAM of the system. | (no value) |
 
 #### Deployment Considerations
 
@@ -214,7 +217,7 @@ documentation for details.
 |------|----------|-----------------|-------------|
 | 5800 | TCP | Optional | Port to access the application's GUI via the web interface. Mapping to the host is optional if web access is not needed. For non-default bridge networks, the port can be changed with the `WEB_LISTENING_PORT` environment variable. |
 | 5900 | TCP | Optional | Port to access the application's GUI via the VNC protocol. Mapping to the host is optional if VNC access is not needed. For non-default bridge networks, the port can be changed with the `VNC_LISTENING_PORT` environment variable. |
-| 3129 | TCP | Optional | Port used by *MyJDownloader* mobile applications and browser extensions to establish a direct connect to the JDownloader Docker container instance. Port needs to be exposed only if *MyJDownloader* is enabled and configured in *Direct Connection* mode.  **NOTE**: Since this port is being reported to the *MyJDownloader* online service, the port mapped on the host side **must** be the same (i.e. 3129). |
+| 3129 | TCP | Optional | Port used by *MyJDownloader* mobile applications and browser extensions to establish a direct connect to the JDownloader Docker container instance. Port needs to be exposed only if *MyJDownloader* is enabled and configured in *Direct Connection* mode. **NOTE**: Since this port is being reported to the *MyJDownloader* online service, the port mapped on the host side **must** be the same (i.e. 3129). |
 
 ### Changing Parameters of a Running Container
 
@@ -493,6 +496,9 @@ for details on configuring environment variables.
 > Web authentication requires the container to be configured with secure web
 > access (HTTPS). See [Security](#security) for details.
 
+> [!NOTE]
+> This feature is not available to VNC clients.
+
 #### Configuring Users Credentials
 
 User credentials can be configured in two ways:
@@ -558,17 +564,14 @@ server {
 
 	location / {
 		proxy_pass http://docker-jdownloader-2;
-	}
-
-	location /websockify {
-		proxy_pass http://docker-jdownloader-2;
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection $connection_upgrade;
-		proxy_read_timeout 86400;
+		proxy_buffering off;
+		proxy_read_timeout 86400s;
+		proxy_send_timeout 86400s;
 	}
 }
-
 ```
 
 ### Routing Based on URL Path
@@ -600,19 +603,17 @@ server {
 	location = /jdownloader-2 {return 301 $scheme://$http_host/jdownloader-2/;}
 	location /jdownloader-2/ {
 		proxy_pass http://docker-jdownloader-2/;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_buffering off;
+		proxy_read_timeout 86400s;
+		proxy_send_timeout 86400s;
 		# Uncomment the following line if your Nginx server runs on a port that
 		# differs from the one seen by external clients.
 		#port_in_redirect off;
-		location ~ ^/jdownloader-2/(websockify(-.*)?) {
-                        proxy_pass http://docker-jdownloader-2/$1;
-			proxy_http_version 1.1;
-			proxy_set_header Upgrade $http_upgrade;
-			proxy_set_header Connection $connection_upgrade;
-			proxy_read_timeout 86400;
-		}
 	}
 }
-
 ```
 
 ## Web Control Panel
@@ -631,6 +632,7 @@ window to open it.
 | **Fullscreen** icon | Toggle fullscreen mode for the browser window. |
 | **Hand** icon| Allows dragging/moving the application window. Visible only when **Scaling Mode** is *None* and **Clip to Window** is enabled.
 | **Folder** icon | Opens the intgegrated file browser. Visible only when the [file manager](#web-file-manager) is enabled. |
+| **Terminal** icon | Opens the integrated terminal. Visibile only when the [terminal](#web-terminal) is enabled. |
 | **Clipboard** text box| Mirrors the application’s clipboard. Any text typed or pasted here is sent to the application, and text copied inside the application automatically appears here. Hidden when [automatic clipboard synchronization](#automatic-clipboard-sync) is active. |
 | **Clear** button | Clears the clipboard. Hidden when [automatic clipboard synchronization](#automatic-clipboard-sync) is active. |
 | **Audio** icon | Mutes or unmutes audio streaming from the container. Visible only when [audio support](#web-audio) is enabled. |
@@ -670,6 +672,9 @@ the first time clipboard access is requested.
 > [control panel](#web-control-panel), which provides manual clipboard access
 > between the host and the container.
 
+> [!NOTE]
+> This feature is not available to VNC clients.
+
 ## Web Audio
 
 The container supports streaming audio from the application, played through the
@@ -688,6 +693,9 @@ configuring environment variables.
 
 Control of the audio stream (mute, unmute and volume) is done via the
 [control panel](#web-control-panel).
+
+> [!NOTE]
+> This feature is not available to VNC clients.
 
 ## Web File Manager
 
@@ -712,6 +720,9 @@ The `WEB_FILE_MANAGER_DENIED_PATHS` environment variable defines which paths are
 explicitly denied access by the file manager. A denied path takes precedence
 over an allowed one.
 
+> [!NOTE]
+> This feature is not available to VNC clients.
+
 ## Web Notifications
 
 The container includes support for notifications sent through the web browser.
@@ -726,6 +737,30 @@ configuring environment variables.
 > Web browsers only allow notifications in secure contexts (HTTPS). This means
 > the container must be configured with secure web access. See
 > [Security](#security) for details.
+
+> [!NOTE]
+> This feature is not available to VNC clients.
+
+### Web Terminal
+
+The container includes a web-based terminal, allowing users to easily obtain
+shell access to the running container through a web browser.
+
+Enable the web terminal by setting `WEB_TERMINAL` to `1`. See the
+[Environment Variables](#environment-variables) section for details on
+configuring environment variables.
+
+> [!IMPORTANT]
+> For security reasons, the shell runs as a non-privileged user. As a result,
+> commands that require root privileges cannot be executed.
+
+> [!IMPORTANT]
+> To prevent sensible information from leaking over the network, it is strongly
+> recommended to configure the container with secure web access. See
+> [Security](#security) for details.
+
+> [!NOTE]
+> This feature is not available to VNC clients.
 
 ## GPU Acceleration Support
 
@@ -743,6 +778,7 @@ To enable GPU acceleration, the host must have compatible open-source kernel
 drivers installed, and the GPU device `/dev/dri` must be exposed to the
 container. For example, this is done by adding the `--device /dev/dri`
 argument to the `docker run` command.
+
 ## Shell Access
 
 To access the shell of a running container, execute the following command:
@@ -758,7 +794,7 @@ creation.
 
 [MyJDownloader](https://my.jdownloader.org) is an online service providing
 remote access to your JDownloader with Web Interface, Android App, iPhone App,
-Windows Phone App and Browser Extensions.  It allows to check download status,
+Windows Phone App and Browser Extensions. It allows to check download status,
 add links and solve captchas from everywhere.
 
 To activate, open the JDownloader UI and click the *My.JDownloader* tab.
@@ -767,7 +803,7 @@ To activate, open the JDownloader UI and click the *My.JDownloader* tab.
 
 When using MyJDownloader from a device on the same local network as the
 JDownloader Docker container instance, *Direct Connection* mode can be enabled
-to reduce the latency and increase the bandwidth.  With this mode, instead of
+to reduce the latency and increase the bandwidth. With this mode, instead of
 going through the cloud, the communication is done through a direct connection
 between the device and JDownloader.
 
@@ -789,7 +825,7 @@ mode is not automatically detected/activated and the following steps are require
 ## Click'n'Load
 
 The easiest way to use the [Click'n'Load] feature is by installing the
-[MyJDownloader browser extension].  With this method, the browser extension
+[MyJDownloader browser extension]. With this method, the browser extension
 handles POST requests to `http://127.0.0.1:9666` and forward the links to
 JDownloader via the *MyJDownloader* service.
 
